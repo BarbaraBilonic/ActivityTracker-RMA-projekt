@@ -86,7 +86,7 @@ class ActivitySetUpFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
         } else {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+
                 EasyPermissions.requestPermissions(
                     this,
                     "To use the app you need to accept location permission.",
@@ -96,7 +96,7 @@ class ActivitySetUpFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                     Manifest.permission.ACCESS_BACKGROUND_LOCATION
                 )
 
-            }
+
         }
     }
 

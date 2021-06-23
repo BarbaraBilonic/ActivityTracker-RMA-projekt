@@ -1,10 +1,12 @@
 package barbarabilonic.ferit.activitytracker.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import barbarabilonic.ferit.activitytracker.ActivityInfo
+import barbarabilonic.ferit.activitytracker.Constants.SHOW_ACTIVITY_TRACKING_FRAGMENT
 import barbarabilonic.ferit.activitytracker.OnSignedInRegButtonClicked
 import barbarabilonic.ferit.activitytracker.OnActivityButtonsClickListener
 import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
@@ -23,12 +25,13 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
     private  val registerFragment=RegisterFragment()
     private val resetPasswordFragment=ResetPasswordFragment()
     private val activitySetUpFragment=ActivitySetUpFragment()
+    private val activityTrackingFragment=ActivityTrackingFragment()
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        goToActivityTrackingFragment(intent)
         binding= ActivityMainBinding.inflate(layoutInflater).also {
             it.bottomNavController.setOnNavigationItemSelectedListener {it2->
                 when(it2.itemId){
@@ -48,7 +51,13 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
 
 
         viewModel.getAuthUserLiveData().observe(this,{checkUserLoggedInStatus()})
+        viewModel.activitySetUpInfo.observe(this,{setCurrentFragment(activityTrackingFragment,false)})
 
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        goToActivityTrackingFragment(intent)
     }
 
 
@@ -110,5 +119,10 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
         activitiesFragment.refreshData(filteredActivities)
     }
 
+    private fun goToActivityTrackingFragment(intent: Intent?){
+        if(intent?.action==SHOW_ACTIVITY_TRACKING_FRAGMENT){
+            setCurrentFragment(activityTrackingFragment,false)
+        }
+    }
 
 }
