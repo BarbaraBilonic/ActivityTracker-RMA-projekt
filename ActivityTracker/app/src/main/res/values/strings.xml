@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ActivityTracker</string>
+    <string name="email_input_hint">email</string>
+    <string name="password_input_hint">password</string>
+    <string name="tv_forgot_password_text">Forgot password?</string>
+    <string name="sign_in_text">Sing In</string>
+    <string name="register_text">Register</string>
+    <string name="email_text">email:</string>
+    <string name="username_text">username:</string>
+    <string name="password_text">password:</string>
+    <string name="repeat_password_text">repeat password:</string>
+    <string name="choose_activity_text">Choose activity:</string>
+    <string name="sort_activities_text">Sort by:</string>
+    <string name="send_email_text">Send Email</string>
+
+
+</resources>

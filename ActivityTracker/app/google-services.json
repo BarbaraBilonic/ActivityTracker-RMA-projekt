@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "850638781257",
+    "project_id": "activity-tracker-firebase",
+    "storage_bucket": "activity-tracker-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:850638781257:android:5f7f7222b02b1e41a6b898",
+        "android_client_info": {
+          "package_name": "barbarabilonic.ferit.activitytracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "850638781257-82h575d8ctecc1neq8ngr1d768d863ba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZKRKkj0N0F8IqUE62PwxudY-lfgflOPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "850638781257-82h575d8ctecc1neq8ngr1d768d863ba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

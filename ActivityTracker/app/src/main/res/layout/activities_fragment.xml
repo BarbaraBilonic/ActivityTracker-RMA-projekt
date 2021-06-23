@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_dark_grey"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_choose_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/choose_activity_text"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/choice_text_size"
+        android:layout_margin="@dimen/choice_text_margin"/>
+
+
+    <Spinner
+        android:id="@+id/spinner_activity_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_choose_activity"
+        android:layout_marginTop="@dimen/spinner_margin_top"
+        android:layout_marginStart="@dimen/spinner_side_margin"
+
+
+        />
+
+    <TextView
+        android:id="@+id/tv_sort_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="@dimen/choice_text_margin"
+        android:text="@string/sort_activities_text"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/choice_text_size"
+        />
+
+    <Spinner
+        android:id="@+id/spinner_sort_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_sort_choice"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/spinner_margin_top"
+        android:layout_marginEnd="@dimen/spinner_side_margin"
+
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_activities"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_start_activity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_activity_choice"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/rv_top_margin"
+         />
+
+    <Button
+        android:id="@+id/btn_start_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        android:text="Start activity"
+        android:textAllCaps="false"
+        android:textColor="@color/theme_dark_grey"
+        android:backgroundTint="@color/theme_light_green"/>
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

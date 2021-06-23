@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/theme_light_grey">
+
+    <ImageView
+        android:id="@+id/iv_item_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:src="@drawable/common_google_signin_btn_icon_dark"/>
+
+    <TextView
+        android:id="@+id/tv_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textColor="@color/theme_dark_grey"
+        android:layout_margin="@dimen/item_text_margin"
+        app:layout_constraintStart_toEndOf="@id/iv_item_picture"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/item_text_size"
+        />
+
+    <TextView
+        android:id="@+id/tv_distance_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="23km"
+        android:layout_margin="@dimen/item_text_margin"
+        app:layout_constraintStart_toEndOf="@id/tv_item_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/theme_dark_grey"
+        android:textSize="@dimen/item_text_size"/>
+    <TextView
+        android:id="@+id/tv_avg_speed_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10km/h"
+        android:layout_margin="@dimen/item_text_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_distance_item"
+        android:textColor="@color/theme_dark_grey"
+        android:textSize="@dimen/item_text_size"/>
+
+    <TextView
+        android:id="@+id/tv_calories_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="200kcal"
+        android:layout_margin="@dimen/item_text_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_avg_speed_item"
+        android:textColor="@color/theme_dark_grey"
+        android:textSize="@dimen/item_text_size"
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_date_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1.1.2021"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/theme_dark_grey"
+        android:textSize="@dimen/item_text_size"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_item"
+        android:layout_marginTop="10dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
