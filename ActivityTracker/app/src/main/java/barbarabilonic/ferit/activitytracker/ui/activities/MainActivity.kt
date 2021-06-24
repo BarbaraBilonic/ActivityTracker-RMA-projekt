@@ -29,9 +29,10 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        goToActivityTrackingFragment(intent)
+
         binding= ActivityMainBinding.inflate(layoutInflater).also {
             it.bottomNavController.setOnNavigationItemSelectedListener {it2->
                 when(it2.itemId){
@@ -50,8 +51,13 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
 
 
 
-        viewModel.getAuthUserLiveData().observe(this,{checkUserLoggedInStatus()})
-        viewModel.activitySetUpInfo.observe(this,{setCurrentFragment(activityTrackingFragment,false)})
+        viewModel.getAuthUserLiveData().observe(this,{checkUserLoggedInStatus(intent)})
+        viewModel.activitySetUpInfo.observe(this,{setCurrentFragment(activityTrackingFragment,false) })
+        viewModel.isCanceled.observe(this,{
+            if(it){
+                setCurrentFragment(activitiesFragment,false)
+                viewModel.setIsCanceled(false)
+            }})
 
     }
 
@@ -61,12 +67,14 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
     }
 
 
-    private fun checkUserLoggedInStatus(){
+    private fun checkUserLoggedInStatus(intent: Intent){
         if(viewModel.checkIfUserIsSignedIn()) {
             setCurrentFragment(activitiesFragment,true)
         }else{
+            goToActivityTrackingFragment(intent)
             setCurrentFragment(signInFragment,false)
         }
+        goToActivityTrackingFragment(intent)
     }
 
     private fun setCurrentFragment(fragment: Fragment, isPartOfBottomNav:Boolean){

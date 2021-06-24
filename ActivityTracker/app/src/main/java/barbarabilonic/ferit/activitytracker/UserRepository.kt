@@ -1,6 +1,7 @@
 package barbarabilonic.ferit.activitytracker
 
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestoreSettings
@@ -9,6 +10,7 @@ import com.google.firebase.firestore.ktx.firestoreSettings
 class UserRepository {
     private var user =User()
     private var firestoreInstance:FirebaseFirestore= FirebaseFirestore.getInstance()
+    private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var userId:String
 
     init {
@@ -84,6 +86,10 @@ class UserRepository {
         }
         return filteredActivities
 
+    }
+
+    fun addNewActivity(type:ActivityType,time:Long,distance:Double){
+        user.addNewActivity(type,time,distance)
     }
 
 

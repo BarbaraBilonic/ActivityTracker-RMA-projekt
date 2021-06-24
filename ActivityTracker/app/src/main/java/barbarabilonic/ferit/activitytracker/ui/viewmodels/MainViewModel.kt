@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import barbarabilonic.ferit.activitytracker.ActivityInfo
 import barbarabilonic.ferit.activitytracker.ActivitySetUpInfo
+import barbarabilonic.ferit.activitytracker.ActivityType
 import barbarabilonic.ferit.activitytracker.UserRepository
 import barbarabilonic.ferit.activitytracker.db.Authentication
 import com.google.firebase.auth.FirebaseUser
@@ -15,6 +16,8 @@ class MainViewModel(private val authentication:Authentication,private val userRe
     val activities: LiveData<MutableList<ActivityInfo>> = _activities
     private var _activitySetUpInfo:MutableLiveData<ActivitySetUpInfo> = MutableLiveData<ActivitySetUpInfo>()
     val activitySetUpInfo:LiveData<ActivitySetUpInfo> = _activitySetUpInfo
+    private var _isCanceled=MutableLiveData<Boolean>(false)
+    val isCanceled:LiveData<Boolean> = _isCanceled
     fun getAuthUserLiveData() :MutableLiveData<FirebaseUser>{
         return authUser
     }
@@ -42,6 +45,13 @@ class MainViewModel(private val authentication:Authentication,private val userRe
     }
     fun setActivitySetUpInfo(activitySetUpInfo: ActivitySetUpInfo){
         _activitySetUpInfo.postValue(activitySetUpInfo)
+    }
+    fun setIsCanceled(isCanceled: Boolean){
+        _isCanceled.postValue(isCanceled)
+    }
+
+    fun addActivity(time:Long,distance:Double){
+        userRepository.addNewActivity(activitySetUpInfo.value!!.type,time,distance)
     }
 
 

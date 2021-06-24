@@ -1,21 +1,29 @@
 package barbarabilonic.ferit.activitytracker.ui.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import barbarabilonic.ferit.activitytracker.ActivityTracker.Companion.application
 import barbarabilonic.ferit.activitytracker.Constants.PAUSE
 import barbarabilonic.ferit.activitytracker.Constants.START_OR_RESUME
+import barbarabilonic.ferit.activitytracker.Constants.STOP
 import barbarabilonic.ferit.activitytracker.R
 import barbarabilonic.ferit.activitytracker.databinding.ActivityTrackingFragmentBinding
+import barbarabilonic.ferit.activitytracker.formatDuration
 import barbarabilonic.ferit.activitytracker.service.ActivityTrackingService
 import barbarabilonic.ferit.activitytracker.service.Line
 import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ActivityTrackingFragment: Fragment() {
@@ -26,7 +34,8 @@ class ActivityTrackingFragment: Fragment() {
 
     private var isTracking=false
     private var pathPoints= mutableListOf<Line>()
-
+    private var distance=0.0
+    private var timeInMilliseconds=0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +46,10 @@ class ActivityTrackingFragment: Fragment() {
         binding.btnStartStop.setOnClickListener {
             startStopRun()
         }
+        binding.btnFinnish.setOnClickListener {
+            finnishActivity()
+        }
+        binding.btnCancel.setOnClickListener { showCancelDialog()}
 
         return binding.root
     }
@@ -56,7 +69,11 @@ class ActivityTrackingFragment: Fragment() {
             requireContext().startService(it)
         }
 
+    private fun finnishActivity(){
+        stopRun()
+        viewModel.addActivity(timeInMilliseconds,distance)
 
+    }
     override fun onResume() {
         super.onResume()
        (binding.mv)?.onResume()
@@ -119,7 +136,7 @@ class ActivityTrackingFragment: Fragment() {
             map?.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
                     pathPoints.last().last(),
-                    20f
+                    15f
                 )
             )
         }
@@ -127,6 +144,9 @@ class ActivityTrackingFragment: Fragment() {
 
     private fun updateTracking(isTracking:Boolean){
         this.isTracking=isTracking
+        if(timeInMilliseconds>0){
+            binding.btnCancel.visibility=View.VISIBLE
+        }
         if(!isTracking){
             binding.btnStartStop.text="Start"
             binding.btnFinnish.visibility=View.VISIBLE
@@ -136,8 +156,30 @@ class ActivityTrackingFragment: Fragment() {
         }
     }
 
+    private fun showCancelDialog(){
+        val dialog=MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Cancel activity?")
+            .setMessage("Are you sure you want to cancel current activity?")
+            .setPositiveButton("Yes"){_,_->
+                stopRun()
+                viewModel.setIsCanceled(true)
+
+            }
+            .setNegativeButton("No"){dialogInterface,_->
+                dialogInterface.cancel()
+            }
+            .create()
+        dialog.show()
+    }
+
+    private fun stopRun(){
+        sendCommandToActivityTracingService(STOP)
+
+    }
+
     private fun startStopRun(){
         if(isTracking){
+
             sendCommandToActivityTracingService(PAUSE)
         }else{
             sendCommandToActivityTracingService(START_OR_RESUME)
@@ -154,5 +196,39 @@ class ActivityTrackingFragment: Fragment() {
             addLatestLine()
             moveCamera()
         })
+
+        ActivityTrackingService.timeInMilliseconds.observe(viewLifecycleOwner, {
+
+            timeInMilliseconds=it
+            val formatedTime= formatDuration(timeInMilliseconds,true)
+            binding.tvTimer.text=formatedTime
+            if(viewModel.activitySetUpInfo.value!!.time>0){
+                if(timeInMilliseconds>= viewModel.activitySetUpInfo.value!!.time){
+                    startStopRun()
+                    sendVibrationNotification()
+                }
+            }
+
+        })
+        ActivityTrackingService.distance.observe(viewLifecycleOwner,{
+            distance=it
+            binding.tvDistance.text=String.format("%.2f",distance/1000)
+            if(viewModel.activitySetUpInfo.value!!.distance>0){
+                if(viewModel.activitySetUpInfo.value!!.distance<=distance){
+                    startStopRun()
+                    sendVibrationNotification()
+                }
+            }
+        })
+    }
+
+
+
+    fun sendVibrationNotification(){
+        val vibrator=application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if(Build.VERSION.SDK_INT >= 26){
+            vibrator.vibrate(VibrationEffect.createOneShot(500L,VibrationEffect.DEFAULT_AMPLITUDE))
+
+        }else vibrator.vibrate(500L)
     }
 }

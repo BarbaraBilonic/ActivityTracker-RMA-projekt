@@ -23,4 +23,10 @@ class User {
     fun changeUsername(username:String){
         userInfo.username=username
     }
+    fun addNewActivity(type: ActivityType,time:Long,distance:Double){
+        var date=System.currentTimeMillis()
+        var avgSpeed= getAverageSpeed(time,distance)
+        var calories= getCaloriesBurned(type,userInfo.weight,time,distance)
+        activityInfos.add(ActivityInfo(type,date,time,distance,calories,avgSpeed))
+    }
 }

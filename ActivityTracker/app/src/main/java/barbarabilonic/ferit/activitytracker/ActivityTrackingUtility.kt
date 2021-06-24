@@ -25,7 +25,14 @@ fun formatDuration(ms: Long, includeMs: Boolean = false): String {
 }
 
 fun formatDate(ms:Long):String{
-     val formatter = SimpleDateFormat("dd/MM/yyyy");
+    val formatter = SimpleDateFormat("dd/MM/yyyy");
     return formatter.format( Date(ms))
 }
+
+fun formatNotificationText(time:Long, distance:Double):String{
+
+    return formatDuration(time*1000L)+"  "+String.format("%.2f",distance/1000)+"km"
+
+}
+
 
