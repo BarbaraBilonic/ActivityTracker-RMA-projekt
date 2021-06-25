@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
     private val resetPasswordFragment=ResetPasswordFragment()
     private val activitySetUpFragment=ActivitySetUpFragment()
     private val activityTrackingFragment=ActivityTrackingFragment()
+    private  val profileFragment=ProfileFragment()
+
 
 
 
@@ -39,9 +41,14 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
                     R.id.nav_activities -> {
                         setCurrentFragment(activitiesFragment,true)
 
-                    }
+                        }
+
+
                     R.id.nav_statistics -> {
                         setCurrentFragment(statisticsFragment,true)
+                    }
+                    R.id.nav_profile->{
+                        setCurrentFragment(profileFragment,true)
                     }
                 }
                 true
@@ -49,15 +56,56 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
         }
         setContentView(binding.root)
 
-
-
-        viewModel.getAuthUserLiveData().observe(this,{checkUserLoggedInStatus(intent)})
-        viewModel.activitySetUpInfo.observe(this,{setCurrentFragment(activityTrackingFragment,false) })
-        viewModel.isCanceled.observe(this,{
+        viewModel.isSignedIn.observe(this,{
             if(it){
-                setCurrentFragment(activitiesFragment,false)
-                viewModel.setIsCanceled(false)
-            }})
+                if(intent?.action==SHOW_ACTIVITY_TRACKING_FRAGMENT)
+                    goToActivityTrackingFragment(intent)
+                else
+
+                setCurrentFragment(activitiesFragment, true)
+            }
+
+        })
+
+
+
+        viewModel.isCanceled.observe(this,{
+            if(it) {
+                setCurrentFragment(activitiesFragment, true)
+                intent.action="NO"
+            }
+        })
+
+        viewModel.activitySetUpInfo.observe(this,{
+            setCurrentFragment(activityTrackingFragment,false)
+        })
+
+        viewModel.isFinnished.observe(this,{
+            if(it){
+            setCurrentFragment(activitiesFragment,true)
+            intent.action="NO"
+        }
+    })
+
+        if(viewModel.checkIfUserIsSignedIn()){
+            if(intent?.action==SHOW_ACTIVITY_TRACKING_FRAGMENT)
+                goToActivityTrackingFragment(intent)
+            else
+            setCurrentFragment(activitiesFragment,true)
+        }else{
+
+
+            setCurrentFragment(signInFragment,false)
+        }
+        viewModel.activities.observe(this,{
+            activitiesFragment.setActivities(it)
+        })
+
+        viewModel.isLoggedOut.observe(this,{
+            if(it==true)
+                setCurrentFragment(signInFragment,false)
+        })
+
 
     }
 
@@ -67,15 +115,7 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
     }
 
 
-    private fun checkUserLoggedInStatus(intent: Intent){
-        if(viewModel.checkIfUserIsSignedIn()) {
-            setCurrentFragment(activitiesFragment,true)
-        }else{
-            goToActivityTrackingFragment(intent)
-            setCurrentFragment(signInFragment,false)
-        }
-        goToActivityTrackingFragment(intent)
-    }
+
 
     private fun setCurrentFragment(fragment: Fragment, isPartOfBottomNav:Boolean){
         if(isPartOfBottomNav){
@@ -91,9 +131,11 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
         }
 
 
+
     }
 
     override fun onSignedInButtonClicked(email: String, password: String) {
+
         viewModel.signInUser(email,password)
     }
 
@@ -102,15 +144,19 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
     }
 
     override fun onSignedInRegButtonClicked() {
+
         setCurrentFragment(registerFragment,false)
     }
 
     override fun onRegisterButtonClicked(email: String, password: String) {
+
         viewModel.registerUser(email,password)
+
     }
 
     override fun onSendEmailButtonClicked(email: String) {
         viewModel.resetPassword(email)
+        setCurrentFragment(signInFragment,false)
     }
 
     override fun onStartActivityButtonClicked() {
@@ -119,12 +165,12 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
 
     override fun onSortSpinnerItemClicked(sort: Int, filter: Int) {
         var sortedActivities=viewModel.sortAndFilter(filter,sort)
-        activitiesFragment.refreshData(sortedActivities)
+        activitiesFragment.setActivities(sortedActivities)
     }
 
     override fun onActivitiesSpinnerItemClicked(filter: Int, sort: Int) {
         var filteredActivities=viewModel.sortAndFilter(filter,sort)
-        activitiesFragment.refreshData(filteredActivities)
+        activitiesFragment.setActivities(filteredActivities)
     }
 
     private fun goToActivityTrackingFragment(intent: Intent?){

@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import barbarabilonic.ferit.activitytracker.ActivityTracker.Companion.application
+import barbarabilonic.ferit.activitytracker.ActivityType
 import barbarabilonic.ferit.activitytracker.Constants.PAUSE
 import barbarabilonic.ferit.activitytracker.Constants.START_OR_RESUME
 import barbarabilonic.ferit.activitytracker.Constants.STOP
 import barbarabilonic.ferit.activitytracker.R
+import barbarabilonic.ferit.activitytracker.SharedPreferencesManager
 import barbarabilonic.ferit.activitytracker.databinding.ActivityTrackingFragmentBinding
 import barbarabilonic.ferit.activitytracker.formatDuration
 import barbarabilonic.ferit.activitytracker.service.ActivityTrackingService
@@ -27,7 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class ActivityTrackingFragment: Fragment() {
-
+    private val sharedPreferencesManager= SharedPreferencesManager()
     private val viewModel by sharedViewModel<MainViewModel>()
     private lateinit var binding:ActivityTrackingFragmentBinding
     private var map: GoogleMap? = null
@@ -37,8 +39,8 @@ class ActivityTrackingFragment: Fragment() {
     private var distance=0.0
     private var timeInMilliseconds=0L
     private var timeInSeconds=0L
-    private var distanceDone=false
-    private var timeDone=false
+    private lateinit var type:ActivityType
+
 
 
     override fun onCreateView(
@@ -48,7 +50,7 @@ class ActivityTrackingFragment: Fragment() {
     ): View? {
         binding= ActivityTrackingFragmentBinding.inflate(inflater,container,false)
         binding.btnStartStop.setOnClickListener {
-            startStopRun()
+            startStopActivity()
         }
         binding.btnFinnish.setOnClickListener {
             finnishActivity()
@@ -56,6 +58,7 @@ class ActivityTrackingFragment: Fragment() {
         binding.btnCancel.setOnClickListener { showCancelDialog()}
 
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,6 +68,7 @@ class ActivityTrackingFragment: Fragment() {
             map=it
             addAllLines()
         }
+
         startObservers()
     }
     private fun sendCommandToActivityTracingService(action:String)=
@@ -74,9 +78,11 @@ class ActivityTrackingFragment: Fragment() {
         }
 
     private fun finnishActivity(){
-        stopRun()
+
+        stopActivity()
         binding.btnFinnish.visibility=View.GONE
-        viewModel.addActivity(timeInMilliseconds,distance)
+        binding.btnCancel.visibility=View.GONE
+        viewModel.addActivity(type,timeInMilliseconds,distance)
 
     }
     override fun onResume() {
@@ -154,10 +160,14 @@ class ActivityTrackingFragment: Fragment() {
             binding.btnFinnish.visibility=View.VISIBLE
         }
         if(!isTracking){
+            binding.btnFinnish.visibility=View.GONE
+            binding.btnCancel.visibility=View.GONE
             binding.btnStartStop.text="Start"
 
         }else{
             binding.btnStartStop.text="Stop"
+            binding.btnCancel.visibility=View.VISIBLE
+            binding.btnFinnish.visibility=View.VISIBLE
 
         }
     }
@@ -167,7 +177,7 @@ class ActivityTrackingFragment: Fragment() {
             .setTitle("Cancel activity?")
             .setMessage("Are you sure you want to cancel current activity?")
             .setPositiveButton("Yes"){_,_->
-                cancelRun()
+                cancelActivity()
 
 
 
@@ -178,17 +188,18 @@ class ActivityTrackingFragment: Fragment() {
             .create()
         dialog.show()
     }
-     private fun cancelRun(){
-         stopRun()
+     private fun cancelActivity(){
+         stopActivity()
          binding.btnFinnish.visibility=View.GONE
+         binding.btnCancel.visibility=View.GONE
          viewModel.setIsCanceled(true)
      }
-    private fun stopRun(){
+    private fun stopActivity(){
         sendCommandToActivityTracingService(STOP)
 
     }
 
-    private fun startStopRun(){
+    private fun startStopActivity(){
         if(isTracking){
 
             sendCommandToActivityTracingService(PAUSE)
@@ -198,6 +209,11 @@ class ActivityTrackingFragment: Fragment() {
     }
 
     private fun startObservers(){
+         isTracking=false
+         pathPoints= mutableListOf<Line>()
+         distance=0.0
+         timeInMilliseconds=0L
+         timeInSeconds=0L
         ActivityTrackingService.isTracking.observe(viewLifecycleOwner,{
             updateTracking(it)
         })
@@ -213,13 +229,6 @@ class ActivityTrackingFragment: Fragment() {
             timeInSeconds=it
             val formatedTime= formatDuration(timeInMilliseconds)
             binding.tvTimer.text=formatedTime
-            if(viewModel.activitySetUpInfo.value!!.time>0 && !timeDone){
-                if(timeInSeconds>= viewModel.activitySetUpInfo.value!!.time){
-                    timeDone=true
-                    sendCommandToActivityTracingService(PAUSE)
-                    sendVibrationNotification()
-                }
-            }
 
         })
         ActivityTrackingService.timeInMilliseconds.observe(viewLifecycleOwner,{
@@ -227,26 +236,17 @@ class ActivityTrackingFragment: Fragment() {
         })
         ActivityTrackingService.distance.observe(viewLifecycleOwner,{
             distance=it
-            binding.tvDistance.text=String.format("%.1f",distance/1000)
-            if(viewModel.activitySetUpInfo.value!!.distance>0 && !distanceDone){
-                if(viewModel.activitySetUpInfo.value!!.distance<=(distance/1000)){
-                    distanceDone=true
+            binding.tvDistance.text=String.format("%.2f km",distance/1000)
 
-                    sendCommandToActivityTracingService(PAUSE)
-                    sendVibrationNotification()
-
-                }
-            }
         })
+       if(viewModel.activitySetUpInfo.value!=null){
+           type= viewModel.activitySetUpInfo.value!!
+           sharedPreferencesManager.saveData(type)
+       }else{
+           type=sharedPreferencesManager.retrieveType()
+       }
     }
 
 
 
-    fun sendVibrationNotification(){
-        val vibrator=application.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if(Build.VERSION.SDK_INT >= 26){
-            vibrator.vibrate(VibrationEffect.createOneShot(500L,VibrationEffect.DEFAULT_AMPLITUDE))
-
-        }else vibrator.vibrate(500L)
-    }
 }

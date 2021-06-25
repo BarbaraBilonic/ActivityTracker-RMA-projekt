@@ -3,14 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/theme_dark_grey">
+    android:background="@color/theme_dark_grey"
+    >
+
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <RadioGroup
         android:id="@+id/rg_activity_choice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/btn_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_start">
         <RadioButton
             android:id="@+id/rb_run"
             android:layout_width="match_parent"
@@ -20,7 +31,8 @@
             android:textSize="@dimen/rb_text_size"
             android:layout_marginLeft="@dimen/rb_margin_side"
             android:layout_marginRight="@dimen/rb_margin_side"
-            android:layout_marginTop="@dimen/rb_margin_top"/>
+            android:layout_marginTop="@dimen/rb_margin_top"
+            />
         <RadioButton
             android:id="@+id/rb_cycle"
             android:textColor="@color/theme_light_grey"
@@ -43,115 +55,7 @@
             android:layout_marginTop="@dimen/rb_margin_top"/>
     </RadioGroup>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/rg_activity_choice"
 
-        >
-
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time:"
-            android:textColor="@color/theme_light_grey"
-            android:textSize="@dimen/set_up_activity_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            android:layout_marginLeft="@dimen/rb_margin_side"
-
-            />
-        <NumberPicker
-            android:id="@+id/np_hours"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@id/tv_time"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:id="@+id/tv_h"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/theme_light_grey"
-            android:text=" h"
-            app:layout_constraintStart_toEndOf="@id/np_hours"
-            android:textSize="@dimen/set_up_activity_text_size"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginLeft="10dp"/>
-        <NumberPicker
-            android:id="@+id/np_minutes"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintStart_toEndOf="@id/tv_h"
-            android:layout_marginLeft="10dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/np_minutes"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="min"
-            android:textSize="@dimen/set_up_activity_text_size"
-            android:textColor="@color/theme_light_grey"
-            android:layout_marginLeft="10dp"/>
-
-
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
- <androidx.constraintlayout.widget.ConstraintLayout
-     android:id="@+id/cl_distance"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     app:layout_constraintTop_toBottomOf="@id/cl_time"
-     >
-     <TextView
-         android:id="@+id/tv_distance"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Distance:"
-
-         android:textSize="@dimen/set_up_activity_text_size"
-         android:layout_marginLeft="@dimen/rb_margin_side"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent"
-         app:layout_constraintBottom_toBottomOf="parent"
-         android:textColor="@color/theme_light_grey"/>
-     <EditText
-         android:id="@+id/et_distance"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="0.0"
-
-         app:layout_constraintStart_toEndOf="@id/tv_distance"
-        app:layout_constraintTop_toTopOf="parent"
-         app:layout_constraintBottom_toBottomOf="parent"
-         android:layout_marginLeft="@dimen/rb_margin_top"
-
-         android:inputType="numberDecimal"
-         />
-     <TextView
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="km"
-         app:layout_constraintStart_toEndOf="@id/et_distance"
-
-         app:layout_constraintTop_toTopOf="parent"
-         app:layout_constraintBottom_toBottomOf="parent"
-         android:textSize="@dimen/set_up_activity_text_size"
-         android:textColor="@color/theme_light_grey"/>
-
-
- </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
@@ -164,7 +68,7 @@
         android:backgroundTint="@color/theme_light_green"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_distance"
+        app:layout_constraintTop_toBottomOf="@id/rg_activity_choice"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="Start"
         android:textAllCaps="false"

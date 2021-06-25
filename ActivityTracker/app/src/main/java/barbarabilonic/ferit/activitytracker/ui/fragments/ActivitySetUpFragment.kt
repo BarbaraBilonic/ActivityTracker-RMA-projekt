@@ -13,7 +13,7 @@ import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-import java.util.concurrent.TimeUnit
+
 
 class ActivitySetUpFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     private val viewModel by sharedViewModel<MainViewModel> ( )
@@ -27,44 +27,25 @@ class ActivitySetUpFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     ): View? {
         binding= SetUpActivityFragmentBinding.inflate(inflater,container,false)
         binding.btnStart.setOnClickListener {
+            requestPermissions()
+            var type:ActivityType
+            if(binding.rgActivityChoice.checkedRadioButtonId<0){
+                type=ActivityType.RUN
+            }else if(binding.rbRun.isChecked){
+                type=ActivityType.RUN
+            }else if(binding.rbCycle.isChecked){
+                type=ActivityType.CYCLE
+            }else{
+                type=ActivityType.WALK
+            }
 
-            viewModel.setActivitySetUpInfo(getActivitySetUp())
+            viewModel.setActivitySetUpInfo(type)
         }
-        binding.npHours.minValue=0
-        binding.npHours.maxValue=23
-        binding.npHours.wrapSelectorWheel=false
-        binding.npMinutes.minValue=0
-        binding.npMinutes.maxValue=59
-        binding.npMinutes.wrapSelectorWheel=false
-        binding.etDistance.filters= arrayOf(EditTextInputFilterDouble("0.0","50.0"))
+
         return binding.root
-        requestPermissions()
-    }
-
-    private fun getActivitySetUp() : ActivitySetUpInfo{
-        var time:Long=0
-        var distance:Double
-        var type:ActivityType
-        time+=TimeUnit.HOURS.toMillis(binding.npHours.value.toLong())
-        time+=TimeUnit.MINUTES.toMillis(binding.npMinutes.value.toLong())
-
-        if(binding.etDistance.text==null || binding.etDistance.text.toString()==""){
-            distance=0.0
-        }else{
-            distance=binding.etDistance.text.toString().trim().toDouble()
-        }
-        if(binding.rgActivityChoice.checkedRadioButtonId<0){
-            type=ActivityType.RUN
-        }else if(binding.rbRun.isChecked){
-            type=ActivityType.RUN
-        }else if(binding.rbCycle.isChecked){
-            type=ActivityType.CYCLE
-        }else{
-            type=ActivityType.WALK
-        }
-        return ActivitySetUpInfo(type,time,distance)
 
     }
+
 
     private fun requestPermissions() {
         if (PermissionUtility.hasLocationPermissions(requireContext())) {

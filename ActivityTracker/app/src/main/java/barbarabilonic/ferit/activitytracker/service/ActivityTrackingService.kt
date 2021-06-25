@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
+import barbarabilonic.ferit.activitytracker.ActivityInfo
 import barbarabilonic.ferit.activitytracker.Constants.NOTIFICATION_CHANNEL_ID
 import barbarabilonic.ferit.activitytracker.Constants.NOTIFICATION_CHANNEL_NAME
 import barbarabilonic.ferit.activitytracker.Constants.NOTIFICATION_ID
@@ -53,6 +54,7 @@ class ActivityTrackingService : LifecycleService(){
     private lateinit var notificationBuilder:NotificationCompat.Builder
     private lateinit var currentNotificationBuilder:NotificationCompat.Builder
     private var serviceKilled=false
+
 
 
     companion object{
@@ -179,7 +181,8 @@ class ActivityTrackingService : LifecycleService(){
                     result
 
                 )
-                distance.postValue(distance.value?.plus(result[0]))
+                val currDist= distance.value?:0.0
+                distance.postValue(currDist+result[0])
             }
 
                 pathPoints.value?.apply {
@@ -237,6 +240,8 @@ class ActivityTrackingService : LifecycleService(){
         FLAG_UPDATE_CURRENT
     )
 
+
+
     private fun updateNotification(isTracking: Boolean){
         val stateText=if(isTracking) "Pause" else "Resume"
         val pendingIntent=if(isTracking){
@@ -285,8 +290,14 @@ class ActivityTrackingService : LifecycleService(){
         serviceKilled=true
         isFirst=true
         pauseService()
-        postInitValues()
         stopForeground(true)
+        postInitValues()
+
+         durationTimeBetweenStartAndStop=0L
+         totalTime=0L
+         startTime=0L
+         lastSecondTimeStamp=0L
+
         stopSelf()
     }
 

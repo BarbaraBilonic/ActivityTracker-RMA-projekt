@@ -2,6 +2,7 @@ package barbarabilonic.ferit.activitytracker.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +18,15 @@ import barbarabilonic.ferit.activitytracker.adapters.ActivityAdapter
 import barbarabilonic.ferit.activitytracker.databinding.ActivitiesFragmentBinding
 import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import kotlin.math.log
 
 
-class ActivitiesFragment(private val activities:MutableList<ActivityInfo>) : Fragment(){
+class ActivitiesFragment(private var activities:MutableList<ActivityInfo>) : Fragment(){
     private lateinit var binding: ActivitiesFragmentBinding
     private lateinit var onButtonsClickListener: OnActivityButtonsClickListener
-    private val viewModel by sharedViewModel<MainViewModel>()
+    private val viewModel by sharedViewModel<MainViewModel> ( )
+    private var bindingInitialized=false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,10 +69,25 @@ class ActivitiesFragment(private val activities:MutableList<ActivityInfo>) : Fra
 
 
 
-
+        bindingInitialized=true
         return binding.root
-        viewModel.activities.observe(viewLifecycleOwner,{refreshData(viewModel.activities.value?: mutableListOf<ActivityInfo>())})
+
+        refreshData(activities)
+        viewModel.activities.observe(viewLifecycleOwner,{
+            setActivities(it)
+        })
+
     }
+
+    fun setActivities(act:MutableList<ActivityInfo>){
+        activities=act
+
+        refreshData(act)
+
+
+
+    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,13 +95,18 @@ class ActivitiesFragment(private val activities:MutableList<ActivityInfo>) : Fra
             onButtonsClickListener = context
         }
 
+
+
     }
 
     fun refreshData(refreshedActivityInfos:MutableList<ActivityInfo>){
-        (binding.rvActivities.adapter as ActivityAdapter).refreshData(refreshedActivityInfos)
+        if(bindingInitialized)
+            (binding.rvActivities.adapter as ActivityAdapter).refreshData(refreshedActivityInfos)
+
     }
 
     fun setUpRecyclerView(){
+
         binding.rvActivities.layoutManager = LinearLayoutManager(
             context,
             LinearLayoutManager.VERTICAL,
@@ -92,5 +116,10 @@ class ActivitiesFragment(private val activities:MutableList<ActivityInfo>) : Fra
             activities
         )
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshData(activities)
     }
 }

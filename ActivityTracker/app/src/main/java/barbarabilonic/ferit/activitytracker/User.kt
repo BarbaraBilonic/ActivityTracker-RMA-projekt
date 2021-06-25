@@ -6,7 +6,9 @@ class User {
     private var activityInfos:MutableList<ActivityInfo> = mutableListOf()
 
 
-
+    fun clearActivityInfo(){
+        activityInfos.clear()
+    }
     fun getActivities():MutableList<ActivityInfo>{
         return activityInfos
     }
