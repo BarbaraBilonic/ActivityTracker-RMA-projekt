@@ -7,10 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import barbarabilonic.ferit.activitytracker.ActivitySetUpInfo
-import barbarabilonic.ferit.activitytracker.ActivityType
-import barbarabilonic.ferit.activitytracker.EditTextInputFilter
-import barbarabilonic.ferit.activitytracker.PermissionUtility
+import barbarabilonic.ferit.activitytracker.*
 import barbarabilonic.ferit.activitytracker.databinding.SetUpActivityFragmentBinding
 import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -30,30 +27,26 @@ class ActivitySetUpFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     ): View? {
         binding= SetUpActivityFragmentBinding.inflate(inflater,container,false)
         binding.btnStart.setOnClickListener {
-            requestPermissions()
+
             viewModel.setActivitySetUpInfo(getActivitySetUp())
         }
-        binding.etHours.filters= arrayOf(EditTextInputFilter("0","23"))
-        binding.etMinutes.filters= arrayOf(EditTextInputFilter("0","59"))
-        binding.etDistance.filters= arrayOf(EditTextInputFilter("0","10"))
+        binding.npHours.minValue=0
+        binding.npHours.maxValue=23
+        binding.npHours.wrapSelectorWheel=false
+        binding.npMinutes.minValue=0
+        binding.npMinutes.maxValue=59
+        binding.npMinutes.wrapSelectorWheel=false
+        binding.etDistance.filters= arrayOf(EditTextInputFilterDouble("0.0","50.0"))
         return binding.root
+        requestPermissions()
     }
 
     private fun getActivitySetUp() : ActivitySetUpInfo{
-        var time:Long
+        var time:Long=0
         var distance:Double
         var type:ActivityType
-            if (binding.etHours.text==null || binding.etHours.text.toString()==""){
-                time=TimeUnit.HOURS.toMillis(0L)
-            }else{
-                time=TimeUnit.HOURS.toMillis(binding.etHours.text.toString().trim().toLong())
-            }
-        if(binding.etMinutes.text==null || binding.etMinutes.text.toString()==""){
-            time+=TimeUnit.MINUTES.toMillis(0L)
-        }
-        else{
-            time+=TimeUnit.MINUTES.toMillis(binding.etMinutes.text.toString().trim().toLong())
-        }
+        time+=TimeUnit.HOURS.toMillis(binding.npHours.value.toLong())
+        time+=TimeUnit.MINUTES.toMillis(binding.npMinutes.value.toLong())
 
         if(binding.etDistance.text==null || binding.etDistance.text.toString()==""){
             distance=0.0

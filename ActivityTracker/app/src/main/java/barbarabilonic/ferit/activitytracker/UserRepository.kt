@@ -27,7 +27,7 @@ class UserRepository {
         this.userId=userId
     }
     fun createUser(){
-            firestoreInstance.collection("Users").document(userId).set(user.getUserInfo())
+        firestoreInstance.collection("Users").document(userId).set(user.getUserInfo())
 
     }
     fun getUserDataFromDatabase(){

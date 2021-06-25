@@ -37,9 +37,9 @@ class RegisterFragment : Fragment(){
         var email=binding.etRegEmailInput.text.toString().trim()
         var password=binding.etRegPasswordInput.text.toString().trim()
         var repeatPassword=binding.etRegRepeatPasswordInput.text.toString().trim()
-        var username=binding.etRegUsernameInput.text.toString().trim()
 
-        if(email==null || password==null || repeatPassword==null || username==null){
+
+        if(email==null || password==null || repeatPassword==null ){
             Toast.makeText(ActivityTracker.application,"All fields must be filled out",Toast.LENGTH_LONG).show()
         }else if(!checkEmail(email)){
             binding.etRegEmailInput.error="Email invalid"
@@ -52,7 +52,7 @@ class RegisterFragment : Fragment(){
             binding.etRegRepeatPasswordInput.requestFocus()
             Log.i("moje1","${password},${repeatPassword}")
         }else{
-            onSignedInButtonClickedListener.onRegisterButtonClicked(email,password,username)
+            onSignedInButtonClickedListener.onRegisterButtonClicked(email,password)
         }
     }
 

@@ -11,13 +11,13 @@
     <FrameLayout
         android:id="@+id/fl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
+
+
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_controller"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/frame_layout_top_bottom_margin"
-        android:layout_marginBottom="@dimen/frame_layout_top_bottom_margin"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 
@@ -32,6 +32,7 @@
         app:itemIconTint="@color/theme_light_grey"
         app:itemTextColor="@color/theme_light_grey"
         app:menu="@menu/bottom_navigation_menu"
+
 
 
         />

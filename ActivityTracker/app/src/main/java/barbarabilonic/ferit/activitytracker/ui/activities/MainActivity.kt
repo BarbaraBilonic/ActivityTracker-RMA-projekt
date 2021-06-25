@@ -105,8 +105,8 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
         setCurrentFragment(registerFragment,false)
     }
 
-    override fun onRegisterButtonClicked(email: String, password: String, username: String) {
-        viewModel.registerUser(email,password,username)
+    override fun onRegisterButtonClicked(email: String, password: String) {
+        viewModel.registerUser(email,password)
     }
 
     override fun onSendEmailButtonClicked(email: String) {
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity(), OnSignedInRegButtonClicked, OnActivity
     }
 
     override fun onSortSpinnerItemClicked(sort: Int, filter: Int) {
-       var sortedActivities=viewModel.sortAndFilter(filter,sort)
+        var sortedActivities=viewModel.sortAndFilter(filter,sort)
         activitiesFragment.refreshData(sortedActivities)
     }
 

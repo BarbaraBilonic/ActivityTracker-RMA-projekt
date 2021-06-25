@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
     <TextView
         android:id="@+id/tv_register"
         android:layout_width="wrap_content"
@@ -39,26 +40,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_reg_username"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_reg_email"
-        android:layout_marginTop="@dimen/signin_reg_medium_margin_top"
-        android:layout_marginLeft="@dimen/signin_reg_side_margin"
-        android:layout_marginRight="@dimen/signin_reg_side_margin"
 
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_reg_username_input"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/username_text" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -68,7 +50,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_reg_username"
+        app:layout_constraintTop_toBottomOf="@+id/til_reg_email"
         android:layout_marginTop="@dimen/signin_reg_medium_margin_top"
         android:layout_marginLeft="@dimen/signin_reg_side_margin"
         android:layout_marginRight="@dimen/signin_reg_side_margin"

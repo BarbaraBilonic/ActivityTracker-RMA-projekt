@@ -13,10 +13,10 @@ class ActivitiesViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
     fun bind(activityInfo: ActivityInfo){
         val itemBinding=ActivityItemBinding.bind(itemView)
         itemBinding.ivItemPicture.setImageResource(getIcon(activityInfo.activityType))
-        itemBinding.tvAvgSpeedItem.text= activityInfo.averageSpeed.toString()+"km/h"
+        itemBinding.tvAvgSpeedItem.text= String.format("%.2f",activityInfo.averageSpeed)+"km/h"
         itemBinding.tvItemTime.text= formatDuration(activityInfo.duration)
         itemBinding.tvCaloriesItem.text=activityInfo.caloriesBurned.toString()+"kcal"
-        itemBinding.tvDistanceItem.text=activityInfo.distance.toString()+"km"
+        itemBinding.tvDistanceItem.text=String.format("%.2f",activityInfo.distance)+"km"
         itemBinding.tvDateItem.text= formatDate(activityInfo.date)
     }
 

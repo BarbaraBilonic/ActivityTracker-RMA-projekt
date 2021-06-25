@@ -1,6 +1,353 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/theme_dark_grey">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/stat_fr_guideline_margin"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/stat_fr_guideline_margin"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/stat_fr_guideline_margin"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/stat_fr_guideline_margin"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+    <TextView
+        android:id="@+id/tv_calories_value_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_runs"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_calories_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total calories"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        android:textColor="@color/theme_light_grey"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_value_r"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        app:layout_constraintStart_toStartOf="@id/gl_start"/>
+
+    <TextView
+        android:id="@+id/tv_distance_value_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0km"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintStart_toStartOf="@id/gl_middle"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@id/tv_runs"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_distance_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total distance"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        app:layout_constraintStart_toEndOf="@id/gl_middle"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_value_r"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+    <TextView
+        android:id="@+id/tv_runs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/gl_top"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        android:text="Run"
+
+        android:textSize="@dimen/stat_fr_big_text_size"
+        android:textColor="@color/theme_light_grey"/>
+
+    <TextView
+        android:id="@+id/tv_avgSpeed_value_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0km/h"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_r"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_avgSpeed_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average speed"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        android:textColor="@color/theme_light_grey"
+        app:layout_constraintTop_toBottomOf="@id/tv_avgSpeed_value_r"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        app:layout_constraintStart_toStartOf="@id/gl_start"/>
+
+    <TextView
+        android:id="@+id/tv_time_value_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintStart_toStartOf="@id/gl_middle"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_r"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_time_r"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total time"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        app:layout_constraintStart_toEndOf="@id/gl_middle"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_value_r"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+
+
+
+    <TextView
+        android:id="@+id/tv_calories_value_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_cycle"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_calories_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total calories"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        android:textColor="@color/theme_light_grey"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_value_c"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        app:layout_constraintStart_toStartOf="@id/gl_start"/>
+
+    <TextView
+        android:id="@+id/tv_distance_value_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0km"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintStart_toStartOf="@id/gl_middle"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@id/tv_cycle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_distance_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total distance"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        app:layout_constraintStart_toEndOf="@id/gl_middle"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_value_c"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+    <TextView
+        android:id="@+id/tv_cycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_r"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        android:text="Cycle"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        android:textColor="@color/theme_light_grey"
+        android:layout_marginTop="18sp"/>
+
+    <TextView
+        android:id="@+id/tv_avgSpeed_value_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0km/h"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_c"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_avgSpeed_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average speed"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        android:textColor="@color/theme_light_grey"
+        app:layout_constraintTop_toBottomOf="@id/tv_avgSpeed_value_c"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        app:layout_constraintStart_toStartOf="@id/gl_start"/>
+
+    <TextView
+        android:id="@+id/tv_time_value_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintStart_toStartOf="@id/gl_middle"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_c"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_time_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total time"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        app:layout_constraintStart_toEndOf="@id/gl_middle"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_value_c"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+
+
+    <TextView
+        android:id="@+id/tv_calories_value_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_walk"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_calories_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total calories"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        android:textColor="@color/theme_light_grey"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_value_w"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        app:layout_constraintStart_toStartOf="@id/gl_start"/>
+
+    <TextView
+        android:id="@+id/tv_distance_value_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0km"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintStart_toStartOf="@id/gl_middle"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@id/tv_walk"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_distance_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total distance"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        app:layout_constraintStart_toEndOf="@id/gl_middle"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_value_w"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+    <TextView
+        android:id="@+id/tv_walk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_c"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        android:text="Walk"
+        android:layout_marginTop="18sp"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        android:textColor="@color/theme_light_grey"/>
+
+    <TextView
+        android:id="@+id/tv_avgSpeed_value_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0km/h"
+        app:layout_constraintStart_toStartOf="@id/gl_start"
+        app:layout_constraintTop_toBottomOf="@id/tv_calories_w"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_avgSpeed_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Average speed"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        android:textColor="@color/theme_light_grey"
+        app:layout_constraintTop_toBottomOf="@id/tv_avgSpeed_value_w"
+        app:layout_constraintEnd_toEndOf="@id/gl_middle"
+        app:layout_constraintStart_toStartOf="@id/gl_start"/>
+
+    <TextView
+        android:id="@+id/tv_time_value_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textColor="@color/theme_light_green"
+        android:textSize="@dimen/stat_fr_big_text_size"
+        app:layout_constraintStart_toStartOf="@id/gl_middle"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"
+        app:layout_constraintTop_toBottomOf="@id/tv_distance_w"
+        android:layout_marginTop="@dimen/stat_fr_top_margin"/>
+    <TextView
+        android:id="@+id/tv_time_w"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total time"
+        android:textColor="@color/theme_light_grey"
+        android:textSize="@dimen/stat_fr_small_text_size"
+        app:layout_constraintStart_toEndOf="@id/gl_middle"
+        app:layout_constraintTop_toBottomOf="@id/tv_time_value_w"
+        app:layout_constraintEnd_toEndOf="@id/gl_end"/>
+
+
+
+
+
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

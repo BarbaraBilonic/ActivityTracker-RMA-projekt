@@ -36,6 +36,10 @@ class ActivityTrackingFragment: Fragment() {
     private var pathPoints= mutableListOf<Line>()
     private var distance=0.0
     private var timeInMilliseconds=0L
+    private var timeInSeconds=0L
+    private var distanceDone=false
+    private var timeDone=false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +75,7 @@ class ActivityTrackingFragment: Fragment() {
 
     private fun finnishActivity(){
         stopRun()
+        binding.btnFinnish.visibility=View.GONE
         viewModel.addActivity(timeInMilliseconds,distance)
 
     }
@@ -144,15 +149,16 @@ class ActivityTrackingFragment: Fragment() {
 
     private fun updateTracking(isTracking:Boolean){
         this.isTracking=isTracking
-        if(timeInMilliseconds>0){
+        if(timeInSeconds>0){
             binding.btnCancel.visibility=View.VISIBLE
+            binding.btnFinnish.visibility=View.VISIBLE
         }
         if(!isTracking){
             binding.btnStartStop.text="Start"
-            binding.btnFinnish.visibility=View.VISIBLE
+
         }else{
             binding.btnStartStop.text="Stop"
-            binding.btnFinnish.visibility=View.GONE
+
         }
     }
 
@@ -161,8 +167,9 @@ class ActivityTrackingFragment: Fragment() {
             .setTitle("Cancel activity?")
             .setMessage("Are you sure you want to cancel current activity?")
             .setPositiveButton("Yes"){_,_->
-                stopRun()
-                viewModel.setIsCanceled(true)
+                cancelRun()
+
+
 
             }
             .setNegativeButton("No"){dialogInterface,_->
@@ -171,7 +178,11 @@ class ActivityTrackingFragment: Fragment() {
             .create()
         dialog.show()
     }
-
+     private fun cancelRun(){
+         stopRun()
+         binding.btnFinnish.visibility=View.GONE
+         viewModel.setIsCanceled(true)
+     }
     private fun stopRun(){
         sendCommandToActivityTracingService(STOP)
 
@@ -197,26 +208,33 @@ class ActivityTrackingFragment: Fragment() {
             moveCamera()
         })
 
-        ActivityTrackingService.timeInMilliseconds.observe(viewLifecycleOwner, {
+        ActivityTrackingService.timeInSeconds.observe(viewLifecycleOwner, {
 
-            timeInMilliseconds=it
-            val formatedTime= formatDuration(timeInMilliseconds,true)
+            timeInSeconds=it
+            val formatedTime= formatDuration(timeInMilliseconds)
             binding.tvTimer.text=formatedTime
-            if(viewModel.activitySetUpInfo.value!!.time>0){
-                if(timeInMilliseconds>= viewModel.activitySetUpInfo.value!!.time){
-                    startStopRun()
+            if(viewModel.activitySetUpInfo.value!!.time>0 && !timeDone){
+                if(timeInSeconds>= viewModel.activitySetUpInfo.value!!.time){
+                    timeDone=true
+                    sendCommandToActivityTracingService(PAUSE)
                     sendVibrationNotification()
                 }
             }
 
         })
+        ActivityTrackingService.timeInMilliseconds.observe(viewLifecycleOwner,{
+            timeInMilliseconds=it
+        })
         ActivityTrackingService.distance.observe(viewLifecycleOwner,{
             distance=it
-            binding.tvDistance.text=String.format("%.2f",distance/1000)
-            if(viewModel.activitySetUpInfo.value!!.distance>0){
-                if(viewModel.activitySetUpInfo.value!!.distance<=distance){
-                    startStopRun()
+            binding.tvDistance.text=String.format("%.1f",distance/1000)
+            if(viewModel.activitySetUpInfo.value!!.distance>0 && !distanceDone){
+                if(viewModel.activitySetUpInfo.value!!.distance<=(distance/1000)){
+                    distanceDone=true
+
+                    sendCommandToActivityTracingService(PAUSE)
                     sendVibrationNotification()
+
                 }
             }
         })

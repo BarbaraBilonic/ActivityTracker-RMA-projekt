@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit
 
 fun getAverageSpeed(time:Long,distance:Double):Double {
 
-    var timeInHours=TimeUnit.MILLISECONDS.toHours(time)
+    var timeInHours=time.toDouble()/1000.0/60.0/60.0
     var distanceInKm=distance/1000
     return distanceInKm/timeInHours
 }
@@ -30,7 +30,9 @@ fun getCaloriesBurned(type: ActivityType,weight:Int,time:Long,distance:Double):I
             }
         }
     }
+    var msToHours=time.toDouble()/1000.0/60.0/60.0
     var caloriesInHour=MET*weight
-    var timeDivider=1/TimeUnit.MILLISECONDS.toHours(time)
+    var timeDivider=(1.0/msToHours)
+
     return (caloriesInHour/timeDivider).toInt()
 }

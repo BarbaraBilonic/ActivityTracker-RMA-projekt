@@ -7,17 +7,17 @@ import barbarabilonic.ferit.activitytracker.ActivityInfo
 import barbarabilonic.ferit.activitytracker.R
 
 class ActivityAdapter(
-    activityInfos:MutableList<ActivityInfo>
+    actInfos:MutableList<ActivityInfo>
 
 ) : RecyclerView.Adapter<ActivitiesViewHolder>() {
 
-    private val activityInfos:MutableList<ActivityInfo> = mutableListOf()
+    private var activityInfos:MutableList<ActivityInfo> = mutableListOf()
 
     init {
-        refreshData(activityInfos)
+        refreshData(actInfos)
     }
 
-    fun refreshData(people: List<ActivityInfo>){
+    fun refreshData(activityInfos: List<ActivityInfo>){
         this.activityInfos.clear()
         this.activityInfos.addAll(activityInfos)
         this.notifyDataSetChanged()

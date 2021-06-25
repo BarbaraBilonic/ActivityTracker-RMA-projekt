@@ -25,7 +25,7 @@ class MainViewModel(private val authentication:Authentication,private val userRe
 
 
     fun signInUser(email:String,password:String){
-       authentication.signInUser(email,password)
+        authentication.signInUser(email,password)
     }
     fun registerUser(email:String,password:String,username:String){
         authentication.registerUser(email,password)

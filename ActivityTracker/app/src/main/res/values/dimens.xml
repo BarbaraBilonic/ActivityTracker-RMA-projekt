@@ -12,13 +12,17 @@
     <dimen name="spinner_margin_top">10dp</dimen>
     <dimen name="spinner_side_margin">30dp</dimen>
     <dimen name="rv_top_margin">20dp</dimen>
-    <dimen name="item_text_margin">15dp</dimen>
+    <dimen name="item_text_margin">10dp</dimen>
     <dimen name="item_text_size">16sp</dimen>
-    <dimen name="rb_text_size">30sp</dimen>
+    <dimen name="rb_text_size">20sp</dimen>
     <dimen name="rb_margin_top">15dp</dimen>
     <dimen name="rb_margin_side">30dp</dimen>
-    <dimen name="set_up_activity_text_size">25sp</dimen>
+    <dimen name="set_up_activity_text_size">20sp</dimen>
     <dimen name="set_up_fragment_text_side_margin">20dp</dimen>
-    <dimen name="set_up_fragment_big_top_margin">33dp</dimen>
+    <dimen name="set_up_fragment_big_top_margin">20dp</dimen>
     <dimen name="act_tracking_text_size">40sp</dimen>
+    <dimen name="stat_fr_guideline_margin">15dp</dimen>
+    <dimen name="stat_fr_big_text_size">28sp</dimen>
+    <dimen name="stat_fr_small_text_size">16sp</dimen>
+    <dimen name="stat_fr_top_margin">15dp</dimen>
 </resources>

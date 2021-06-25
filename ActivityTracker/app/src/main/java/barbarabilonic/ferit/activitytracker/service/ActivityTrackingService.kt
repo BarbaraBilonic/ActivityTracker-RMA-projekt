@@ -49,16 +49,18 @@ class ActivityTrackingService : LifecycleService(){
     private var totalTime=0L
     private var startTime=0L
     private var lastSecondTimeStamp=0L
-    private val timeInSeconds = MutableLiveData<Long>()
+
     private lateinit var notificationBuilder:NotificationCompat.Builder
     private lateinit var currentNotificationBuilder:NotificationCompat.Builder
     private var serviceKilled=false
 
+
     companion object{
         val distance=MutableLiveData<Double>()
-        val timeInMilliseconds = MutableLiveData<Long>()
+         val timeInSeconds = MutableLiveData<Long>()
         val isTracking=MutableLiveData<Boolean>()
         val pathPoints=MutableLiveData<Lines>()
+        val timeInMilliseconds=MutableLiveData<Long>()
 
     }
 
@@ -116,7 +118,7 @@ class ActivityTrackingService : LifecycleService(){
         CoroutineScope(Dispatchers.Main).launch {
             while(isTracking.value!!){
                 durationTimeBetweenStartAndStop=System.currentTimeMillis()-startTime
-                timeInMilliseconds.postValue(totalTime+durationTimeBetweenStartAndStop)
+                timeInMilliseconds.postValue((totalTime+durationTimeBetweenStartAndStop).toLong())
                 if(timeInMilliseconds.value!! >=lastSecondTimeStamp+1000L){
                     timeInSeconds.postValue(timeInSeconds.value!! +1)
                     lastSecondTimeStamp+=1000L
