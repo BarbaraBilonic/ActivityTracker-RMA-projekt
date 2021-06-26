@@ -1,22 +1,17 @@
 package barbarabilonic.ferit.activitytracker.ui.fragments
 
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import barbarabilonic.ferit.activitytracker.ActivityTracker.Companion.application
-import barbarabilonic.ferit.activitytracker.ActivityType
-import barbarabilonic.ferit.activitytracker.Constants.PAUSE
-import barbarabilonic.ferit.activitytracker.Constants.START_OR_RESUME
-import barbarabilonic.ferit.activitytracker.Constants.STOP
+import barbarabilonic.ferit.activitytracker.utilities.ActivityType
+import barbarabilonic.ferit.activitytracker.utilities.Constants.PAUSE
+import barbarabilonic.ferit.activitytracker.utilities.Constants.START_OR_RESUME
+import barbarabilonic.ferit.activitytracker.utilities.Constants.STOP
 import barbarabilonic.ferit.activitytracker.R
-import barbarabilonic.ferit.activitytracker.SharedPreferencesManager
+import barbarabilonic.ferit.activitytracker.persistance.SharedPreferencesManager
 import barbarabilonic.ferit.activitytracker.databinding.ActivityTrackingFragmentBinding
 import barbarabilonic.ferit.activitytracker.formatDuration
 import barbarabilonic.ferit.activitytracker.service.ActivityTrackingService
@@ -39,7 +34,7 @@ class ActivityTrackingFragment: Fragment() {
     private var distance=0.0
     private var timeInMilliseconds=0L
     private var timeInSeconds=0L
-    private lateinit var type:ActivityType
+    private lateinit var type: ActivityType
 
 
 
@@ -160,14 +155,14 @@ class ActivityTrackingFragment: Fragment() {
             binding.btnFinnish.visibility=View.VISIBLE
         }
         if(!isTracking){
-            binding.btnFinnish.visibility=View.GONE
-            binding.btnCancel.visibility=View.GONE
+            binding.btnFinnish.visibility=View.VISIBLE
+            binding.btnCancel.visibility=View.VISIBLE
             binding.btnStartStop.text="Start"
 
         }else{
             binding.btnStartStop.text="Stop"
-            binding.btnCancel.visibility=View.VISIBLE
-            binding.btnFinnish.visibility=View.VISIBLE
+            binding.btnCancel.visibility=View.GONE
+            binding.btnFinnish.visibility=View.GONE
 
         }
     }
@@ -210,7 +205,7 @@ class ActivityTrackingFragment: Fragment() {
 
     private fun startObservers(){
          isTracking=false
-         pathPoints= mutableListOf<Line>()
+         pathPoints= mutableListOf()
          distance=0.0
          timeInMilliseconds=0L
          timeInSeconds=0L

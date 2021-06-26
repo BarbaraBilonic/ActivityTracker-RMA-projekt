@@ -1,4 +1,4 @@
-package barbarabilonic.ferit.activitytracker
+package barbarabilonic.ferit.activitytracker.utilities
 
 object Constants {
     const val START_OR_RESUME="START_OR_RESUME"

@@ -1,4 +1,8 @@
-package barbarabilonic.ferit.activitytracker
+package barbarabilonic.ferit.activitytracker.dataModel
+
+import barbarabilonic.ferit.activitytracker.utilities.ActivityType
+import barbarabilonic.ferit.activitytracker.getAverageSpeed
+import barbarabilonic.ferit.activitytracker.getCaloriesBurned
 
 
 class User {
@@ -12,7 +16,7 @@ class User {
     fun getActivities():MutableList<ActivityInfo>{
         return activityInfos
     }
-    fun addActivity(activityInfo:ActivityInfo){
+    fun addActivity(activityInfo: ActivityInfo){
         activityInfos.add(activityInfo)
     }
     fun changeWeight(weight:Int){
@@ -20,7 +24,7 @@ class User {
     }
     fun getWeight():Int=weight
 
-    fun addNewActivity(type: ActivityType,time:Long,distance:Double){
+    fun addNewActivity(type: ActivityType, time:Long, distance:Double){
         var date=System.currentTimeMillis()
         var avgSpeed= getAverageSpeed(time,distance)
         var calories= getCaloriesBurned(type,weight,time,distance)

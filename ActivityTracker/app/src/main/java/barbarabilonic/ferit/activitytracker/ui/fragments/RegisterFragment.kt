@@ -6,15 +6,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import barbarabilonic.ferit.activitytracker.*
 import barbarabilonic.ferit.activitytracker.databinding.RegisterFragmentBinding
+import barbarabilonic.ferit.activitytracker.interfaces.OnSignedInRegButtonClicked
+import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
 class RegisterFragment : Fragment(){
     private lateinit var binding: RegisterFragmentBinding
     private lateinit var onSignedInButtonClickedListener: OnSignedInRegButtonClicked
+    private val viewModel by sharedViewModel<MainViewModel> (  )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +42,8 @@ class RegisterFragment : Fragment(){
         var repeatPassword=binding.etRegRepeatPasswordInput.text.toString().trim()
 
 
-        if(email==null || password==null || repeatPassword==null ){
-            Toast.makeText(ActivityTracker.application,"All fields must be filled out",Toast.LENGTH_LONG).show()
-        }else if(!checkEmail(email)){
+
+         if(!checkEmail(email)){
             binding.etRegEmailInput.error="Email invalid"
             binding.etRegEmailInput.requestFocus()
         }else if(!checkPassword(password)){
@@ -52,7 +54,7 @@ class RegisterFragment : Fragment(){
             binding.etRegRepeatPasswordInput.requestFocus()
             Log.i("moje1","${password},${repeatPassword}")
         }else{
-            onSignedInButtonClickedListener.onRegisterButtonClicked(email,password)
+            viewModel.registerUser(email,password)
         }
     }
 

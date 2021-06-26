@@ -1,4 +1,4 @@
-package barbarabilonic.ferit.activitytracker
+package barbarabilonic.ferit.activitytracker.interfaces
 
 interface OnActivityButtonsClickListener {
     fun onStartActivityButtonClicked()

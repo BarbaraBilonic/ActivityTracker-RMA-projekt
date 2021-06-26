@@ -3,7 +3,7 @@ package barbarabilonic.ferit.activitytracker.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import barbarabilonic.ferit.activitytracker.ActivityInfo
+import barbarabilonic.ferit.activitytracker.dataModel.ActivityInfo
 import barbarabilonic.ferit.activitytracker.R
 
 class ActivityAdapter(

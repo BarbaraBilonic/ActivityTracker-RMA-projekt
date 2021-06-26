@@ -36,6 +36,7 @@
             android:id="@+id/et_reg_email_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="textEmailAddress"
             android:hint="@string/email_input_hint" />
     </com.google.android.material.textfield.TextInputLayout>
 

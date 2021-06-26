@@ -2,7 +2,6 @@ package barbarabilonic.ferit.activitytracker.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,21 +9,17 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import barbarabilonic.ferit.activitytracker.ActivityInfo
+import barbarabilonic.ferit.activitytracker.dataModel.ActivityInfo
 import barbarabilonic.ferit.activitytracker.ActivityTracker.Companion.application
-import barbarabilonic.ferit.activitytracker.OnActivityButtonsClickListener
+import barbarabilonic.ferit.activitytracker.interfaces.OnActivityButtonsClickListener
 import barbarabilonic.ferit.activitytracker.R
 import barbarabilonic.ferit.activitytracker.adapters.ActivityAdapter
 import barbarabilonic.ferit.activitytracker.databinding.ActivitiesFragmentBinding
-import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import kotlin.math.log
 
 
 class ActivitiesFragment(private var activities:MutableList<ActivityInfo>) : Fragment(){
     private lateinit var binding: ActivitiesFragmentBinding
     private lateinit var onButtonsClickListener: OnActivityButtonsClickListener
-    private val viewModel by sharedViewModel<MainViewModel> ( )
     private var bindingInitialized=false
 
 
@@ -35,10 +30,10 @@ class ActivitiesFragment(private var activities:MutableList<ActivityInfo>) : Fra
     ): View? {
         binding= ActivitiesFragmentBinding.inflate(inflater,container,false)
         setUpRecyclerView()
-        var activityChoices= arrayOf<String>("All","Run","Cycle","Walk")
+        val activityChoices= arrayOf("All","Run","Cycle","Walk")
         val activitiesArrayAdapter:ArrayAdapter<String> = ArrayAdapter(application, R.layout.spinner_item,activityChoices)
         binding.spinnerActivityChoice.adapter=activitiesArrayAdapter
-        var sortChoices= arrayOf<String>("Date","Distance","Duration","Calories","Average speed")
+        val sortChoices= arrayOf("Date","Distance","Duration","Calories","Average speed")
         val sortArrayAdapter:ArrayAdapter<String> = ArrayAdapter(application,R.layout.spinner_item,sortChoices)
         binding.spinnerSortChoice.adapter=sortArrayAdapter
         binding.spinnerActivityChoice.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -72,10 +67,8 @@ class ActivitiesFragment(private var activities:MutableList<ActivityInfo>) : Fra
         bindingInitialized=true
         return binding.root
 
-        refreshData(activities)
-        viewModel.activities.observe(viewLifecycleOwner,{
-            setActivities(it)
-        })
+
+
 
     }
 
@@ -99,13 +92,13 @@ class ActivitiesFragment(private var activities:MutableList<ActivityInfo>) : Fra
 
     }
 
-    fun refreshData(refreshedActivityInfos:MutableList<ActivityInfo>){
+    private fun refreshData(refreshedActivityInfos:MutableList<ActivityInfo>){
         if(bindingInitialized)
             (binding.rvActivities.adapter as ActivityAdapter).refreshData(refreshedActivityInfos)
 
     }
 
-    fun setUpRecyclerView(){
+    private fun setUpRecyclerView(){
 
         binding.rvActivities.layoutManager = LinearLayoutManager(
             context,

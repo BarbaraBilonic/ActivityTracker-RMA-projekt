@@ -2,7 +2,7 @@ package barbarabilonic.ferit.activitytracker.adapters
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import barbarabilonic.ferit.activitytracker.ActivityInfo
+import barbarabilonic.ferit.activitytracker.dataModel.ActivityInfo
 import barbarabilonic.ferit.activitytracker.databinding.ActivityItemBinding
 import barbarabilonic.ferit.activitytracker.formatDate
 import barbarabilonic.ferit.activitytracker.formatDuration

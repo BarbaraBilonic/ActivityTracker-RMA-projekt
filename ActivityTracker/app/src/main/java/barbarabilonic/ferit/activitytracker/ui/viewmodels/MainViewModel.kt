@@ -3,9 +3,9 @@ package barbarabilonic.ferit.activitytracker.ui.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import barbarabilonic.ferit.activitytracker.ActivityInfo
-import barbarabilonic.ferit.activitytracker.ActivityType
-import barbarabilonic.ferit.activitytracker.UserRepository
+import barbarabilonic.ferit.activitytracker.dataModel.ActivityInfo
+import barbarabilonic.ferit.activitytracker.utilities.ActivityType
+import barbarabilonic.ferit.activitytracker.model.UserRepository
 
 class MainViewModel(private val userRepository: UserRepository) : ViewModel(){
 
@@ -18,18 +18,25 @@ class MainViewModel(private val userRepository: UserRepository) : ViewModel(){
     private var _activitySetUpInfo=MutableLiveData<ActivityType>()
     val activitySetUpInfo:LiveData<ActivityType> = _activitySetUpInfo
 
-    private var _isCanceled=MutableLiveData<Boolean>(false)
+    private var _isCanceled=MutableLiveData<Boolean>()
     val isCanceled : LiveData<Boolean> =_isCanceled
 
-    private var _isFinnished=MutableLiveData<Boolean>(false)
+    private var _isFinnished=MutableLiveData<Boolean>()
     val isFinnished: LiveData<Boolean> = _isFinnished
 
     private var _isLoggedOut = userRepository.getSignedOutLiveData()
     val isLoggedOut : LiveData<Boolean> = _isLoggedOut
 
+    private var _back=MutableLiveData<Boolean>()
+     val back: LiveData<Boolean> = _back
 
 
 
+
+
+    fun goBack(){
+        _back.postValue(true)
+    }
 
 
 
@@ -57,14 +64,14 @@ class MainViewModel(private val userRepository: UserRepository) : ViewModel(){
         return userRepository.sortAndFilter(filter,sort)
 
     }
-    fun setActivitySetUpInfo(type:ActivityType){
+    fun setActivitySetUpInfo(type: ActivityType){
         _activitySetUpInfo.postValue(type)
     }
     fun setIsCanceled(isCanceled: Boolean){
         _isCanceled.postValue(isCanceled)
     }
 
-    fun addActivity(type:ActivityType,time:Long,distance:Double){
+    fun addActivity(type: ActivityType, time:Long, distance:Double){
         userRepository.addNewActivity(type,time,distance)
         _isFinnished.postValue(true)
 

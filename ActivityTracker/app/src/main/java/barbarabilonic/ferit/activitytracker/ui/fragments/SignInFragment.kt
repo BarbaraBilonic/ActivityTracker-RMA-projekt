@@ -5,17 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import barbarabilonic.ferit.activitytracker.ActivityTracker.Companion.application
-import barbarabilonic.ferit.activitytracker.OnSignedInRegButtonClicked
+import barbarabilonic.ferit.activitytracker.interfaces.OnSignedInRegButtonClicked
 import barbarabilonic.ferit.activitytracker.checkEmail
 import barbarabilonic.ferit.activitytracker.checkPassword
 import barbarabilonic.ferit.activitytracker.databinding.SignInFragmentBinding
+import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SignInFragment : Fragment() {
     private lateinit var binding:SignInFragmentBinding
     private lateinit var onSignedInButtonClickedListener: OnSignedInRegButtonClicked
+    private val viewModel by sharedViewModel<MainViewModel> (  )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,17 +41,14 @@ class SignInFragment : Fragment() {
         var email=binding.etEmailInput.text.toString().trim()
         var password=binding.etPasswordInput.text.toString().trim()
 
-        if(email==null || password==null){
-            Toast.makeText(application,"All fields must be filled out",Toast.LENGTH_LONG).show()
-
-        }else if(!checkEmail(email)){
+        if(!checkEmail(email)){
             binding.etEmailInput.error="Email invalid"
             binding.etEmailInput.requestFocus()
         }else if(!checkPassword(password)){
             binding.etPasswordInput.error="Password invalid"
             binding.etPasswordInput.requestFocus()
         }else{
-            onSignedInButtonClickedListener.onSignedInButtonClicked(email,password)
+            viewModel.signInUser(email,password)
         }
     }
 

@@ -1,4 +1,4 @@
-package barbarabilonic.ferit.activitytracker
+package barbarabilonic.ferit.activitytracker.utilities
 
 import android.Manifest
 import android.content.Context

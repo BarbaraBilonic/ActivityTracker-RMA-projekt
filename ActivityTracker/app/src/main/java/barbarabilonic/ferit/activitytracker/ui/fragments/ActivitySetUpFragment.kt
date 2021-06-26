@@ -1,15 +1,17 @@
 package barbarabilonic.ferit.activitytracker.ui.fragments
 
 import android.Manifest
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import barbarabilonic.ferit.activitytracker.*
 import barbarabilonic.ferit.activitytracker.databinding.SetUpActivityFragmentBinding
 import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
+import barbarabilonic.ferit.activitytracker.utilities.ActivityType
+import barbarabilonic.ferit.activitytracker.utilities.PermissionUtility
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -27,23 +29,32 @@ class ActivitySetUpFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     ): View? {
         binding= SetUpActivityFragmentBinding.inflate(inflater,container,false)
         binding.btnStart.setOnClickListener {
-            requestPermissions()
-            var type:ActivityType
+
+            var type: ActivityType
             if(binding.rgActivityChoice.checkedRadioButtonId<0){
-                type=ActivityType.RUN
+                type= ActivityType.RUN
             }else if(binding.rbRun.isChecked){
-                type=ActivityType.RUN
+                type= ActivityType.RUN
             }else if(binding.rbCycle.isChecked){
-                type=ActivityType.CYCLE
+                type= ActivityType.CYCLE
             }else{
-                type=ActivityType.WALK
+                type= ActivityType.WALK
             }
 
             viewModel.setActivitySetUpInfo(type)
         }
+        binding.btnBack.setOnClickListener {
+            viewModel.goBack()
+        }
 
         return binding.root
 
+
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requestPermissions()
     }
 
 

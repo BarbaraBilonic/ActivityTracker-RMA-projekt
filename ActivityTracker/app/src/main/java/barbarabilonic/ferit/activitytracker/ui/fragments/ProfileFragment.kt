@@ -9,9 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import barbarabilonic.ferit.activitytracker.ActivityTracker.Companion.application
-import barbarabilonic.ferit.activitytracker.EditTextInputFilter
 import barbarabilonic.ferit.activitytracker.databinding.ProfileFragmentBinding
-import barbarabilonic.ferit.activitytracker.databinding.SetUpActivityFragmentBinding
 import barbarabilonic.ferit.activitytracker.ui.viewmodels.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

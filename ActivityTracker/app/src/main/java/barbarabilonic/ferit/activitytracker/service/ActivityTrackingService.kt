@@ -16,15 +16,14 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
-import barbarabilonic.ferit.activitytracker.ActivityInfo
-import barbarabilonic.ferit.activitytracker.Constants.NOTIFICATION_CHANNEL_ID
-import barbarabilonic.ferit.activitytracker.Constants.NOTIFICATION_CHANNEL_NAME
-import barbarabilonic.ferit.activitytracker.Constants.NOTIFICATION_ID
-import barbarabilonic.ferit.activitytracker.Constants.PAUSE
-import barbarabilonic.ferit.activitytracker.Constants.SHOW_ACTIVITY_TRACKING_FRAGMENT
-import barbarabilonic.ferit.activitytracker.Constants.START_OR_RESUME
-import barbarabilonic.ferit.activitytracker.Constants.STOP
-import barbarabilonic.ferit.activitytracker.PermissionUtility
+import barbarabilonic.ferit.activitytracker.utilities.Constants.NOTIFICATION_CHANNEL_ID
+import barbarabilonic.ferit.activitytracker.utilities.Constants.NOTIFICATION_CHANNEL_NAME
+import barbarabilonic.ferit.activitytracker.utilities.Constants.NOTIFICATION_ID
+import barbarabilonic.ferit.activitytracker.utilities.Constants.PAUSE
+import barbarabilonic.ferit.activitytracker.utilities.Constants.SHOW_ACTIVITY_TRACKING_FRAGMENT
+import barbarabilonic.ferit.activitytracker.utilities.Constants.START_OR_RESUME
+import barbarabilonic.ferit.activitytracker.utilities.Constants.STOP
+import barbarabilonic.ferit.activitytracker.utilities.PermissionUtility
 import barbarabilonic.ferit.activitytracker.R
 import barbarabilonic.ferit.activitytracker.formatNotificationText
 import barbarabilonic.ferit.activitytracker.ui.activities.MainActivity
@@ -43,8 +42,8 @@ typealias Line=MutableList<com.google.android.gms.maps.model.LatLng>
 typealias Lines=MutableList<Line>
 class ActivityTrackingService : LifecycleService(){
 
-    var isFirst=true
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var isFirst=true
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var isTimerEnabled=false
     private var durationTimeBetweenStartAndStop=0L
     private var totalTime=0L
@@ -120,7 +119,7 @@ class ActivityTrackingService : LifecycleService(){
         CoroutineScope(Dispatchers.Main).launch {
             while(isTracking.value!!){
                 durationTimeBetweenStartAndStop=System.currentTimeMillis()-startTime
-                timeInMilliseconds.postValue((totalTime+durationTimeBetweenStartAndStop).toLong())
+                timeInMilliseconds.postValue((totalTime+durationTimeBetweenStartAndStop))
                 if(timeInMilliseconds.value!! >=lastSecondTimeStamp+1000L){
                     timeInSeconds.postValue(timeInSeconds.value!! +1)
                     lastSecondTimeStamp+=1000L
@@ -148,7 +147,7 @@ class ActivityTrackingService : LifecycleService(){
         }
     }
 
-    val locationCallback=object: LocationCallback(){
+    private val locationCallback=object: LocationCallback(){
         override fun onLocationResult(result: LocationResult?) {
             super.onLocationResult(result)
             if(isTracking.value!!){

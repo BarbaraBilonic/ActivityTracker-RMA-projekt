@@ -1,6 +1,6 @@
 package barbarabilonic.ferit.activitytracker
 
-import java.util.concurrent.TimeUnit
+import barbarabilonic.ferit.activitytracker.utilities.ActivityType
 
 fun getAverageSpeed(time:Long,distance:Double):Double {
 
@@ -9,7 +9,7 @@ fun getAverageSpeed(time:Long,distance:Double):Double {
     return distanceInKm/timeInHours
 }
 
-fun getCaloriesBurned(type: ActivityType,weight:Int,time:Long,distance:Double):Int{
+fun getCaloriesBurned(type: ActivityType, weight:Int, time:Long, distance:Double):Int{
     var MET:Double
     when(type){
         ActivityType.RUN->{
